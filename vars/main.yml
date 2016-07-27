@@ -1,0 +1,5 @@
+---
+# vars file for personal_configurations
+homedir: "/home/{{ user.name }}"
+vim_dir: "{{homedir}}/.vim"
+vundle_dir: "{{vim_dir}}/bundle/vundle"

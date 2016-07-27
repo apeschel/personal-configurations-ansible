@@ -1,0 +1,11 @@
+---
+- name: apply configuration to localhost
+- hosts: localhost
+  roles:
+    - {
+        role: personal_configurations,
+        user: {
+          name: testuser,
+          comment: "Test User"
+        }
+      }

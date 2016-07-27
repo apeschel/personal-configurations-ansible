@@ -1,0 +1,6 @@
+---
+# handlers file for personal_configurations
+- name: Install Vundle Packages
+  shell: vim +PluginInstall +qa
+  become: yes
+  become_user: "{{username}}"

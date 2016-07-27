@@ -1,0 +1,48 @@
+---
+# tasks file for personal_configurations
+- name: Ensure apt cache is up to date
+  apt: update_cache=yes
+
+- name: Ensure packages are installed
+  apt: name={{item}}
+  with_items:
+      - zsh
+      - vim
+      - git
+      - zsh
+      - tmux
+      - sudo
+      - openssh-server
+      - python3-virtualenv
+      - python-virtualenv
+
+- name: Create user
+  user: name={{user.name}}
+    comment={{user.comment}}
+    shell=/bin/zsh
+    groups=sudo
+    append=yes
+
+- name: Install personal configurations
+  copy: src={{item}} dest={{homedir}}
+    owner={{user.name}}
+    group={{user.name}}
+  with_fileglob:
+      - dotfiles/.*
+
+- name: Setup VIM Swap Dirs
+  file: path={{vim_dir}}/{{item}}
+    owner={{user.name}}
+    group={{user.name}}
+    state=directory
+    mode=0755
+  with_items:
+      - tmp
+      - backup
+
+- name: Setup VIM Vundle
+  git: repo=https://github.com/gmarik/vundle.git dest={{vundle_dir}}
+  become: yes
+  become_user: "{{user.name}}"
+  notify:
+    - "Install Vundle Packages"
